@@ -105,19 +105,15 @@ jobs:
       - name: Build App
         # Build .apk
         run: |
-          bash ./gradlew ${{inputs.args}} assembleFullRelease
-          bash ./gradlew ${{inputs.args}} assembleLiteRelease
+          bash ./gradlew ${{inputs.args}} assembleFullDebug
+          bash ./gradlew ${{inputs.args}} assembleLiteDebug
         env:
-          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
-          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
           CI_BUILD_MINIFY: ${{ inputs.minify }}
       - name: Move files
         run: |
           mkdir -p app/build/upload
-          mv app/build/outputs/apk/full/release/app-full-release.apk app/build/upload/zhihu++-full.apk
-          mv app/build/outputs/apk/lite/release/app-lite-release.apk app/build/upload/zhihu++-lite.apk
+          mv app/build/outputs/apk/full/debug/app-full-debug.apk app/build/upload/zhihu++-full.apk
+          mv app/build/outputs/apk/lite/debug/app-lite-debug.apk app/build/upload/zhihu++-lite.apk
       - name: Recompress APK
         if: ${{ inputs.minify }}
         env:
@@ -212,4 +208,3 @@ jobs:
             app/build/upload/zhihu++-full.apk
           fail_on_unmatched_files: true
           prerelease: false
-
